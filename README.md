@@ -1,36 +1,82 @@
-# SignalRoom
+# HotelOps Intelligence MVP
 
-SignalRoom is a small, runnable prototype for evidence-driven production incident investigation.
+Interview-ready Next.js prototype for evidence-backed hotel labor-cost analysis at **Grandview Hotel**. The interface uses six months of synthetic data and a deterministic local analysis engine, so it works without a database, paid API, or `OPENAI_API_KEY`.
 
-## Run
+## Features
 
-No dependencies or API keys are required. From this folder, run:
+- Demo authentication with the seeded manager account
+- Responsive B2B operations dashboard
+- Labor KPIs, actual-vs-budget trend, department variance, and occupancy signals
+- AI analysis screen with suggested questions, loading state, evidence, confidence, and recommendations
+- Server-side `POST /api/analyze` endpoint; arithmetic stays in `lib/analytics.ts`
+- Visible `Synthetic Demo Data` and `Prototype / Demo` labels
 
-    node serve.js
+## Architecture
 
-Then open `http://localhost:3000` (or the port printed by the server). The app is plain HTML, CSS, and JavaScript.
+User → Next.js Dashboard → Analytics Functions → Synthetic Hotel Data → Validation Layer → AI Explanation Layer → Evidence-backed Response
 
-## How to demo
+## Stack
 
-1. Scroll to **Replay an incident. Get a plan.**
-2. Keep the prefilled representative case and click **Analyze incident**.
-3. Show the ranked hypotheses, supporting/contradicting evidence, reconstructed timeline, and recommended first move.
-4. Click **Load invalid case**, then **Analyze incident**. The app should reject the packet because it lacks a specific summary and enough signals.
+Next.js 14, React, TypeScript, Recharts dependency (available for chart expansion), and Vercel-compatible API routes. The current MVP stores demo data in `data/demo.ts`; it intentionally does not require SQLite or Prisma at runtime.
 
-## Sample expected output
+## Run locally
 
-The representative packet ranks **Upstream inventory dependency is timing out** first, at approximately **92% lead confidence**, and recommends checking inventory latency/saturation against the checkout-api request timeout. The result is a lead for investigation, not autonomous remediation.
+```bash
+npm install
+npm run dev
+```
 
-## Scope and boundaries
+Open [http://localhost:3000](http://localhost:3000).
 
-- Implemented: problem framing, approach rationale, input validation, deterministic ranking, evidence labels, timeline reconstruction, responsive UI.
-- Mocked: incident data and the “AI” analysis logic. The rules are intentionally transparent and local.
-- Deferred: authenticated log/metric/deploy connectors, persistent incident history, model evaluation, permissions, and real remediation actions.
+Demo login:
 
-## Time and AI note
+- Email: `manager@grandviewhotel.com`
+- Password: `Demo123!`
 
-Estimated build time: about 2 hours. AI was used to help structure the page, draft UI copy, and review edge cases. I checked the output by reading the source, exercising both the representative and invalid paths, and verifying that the ranking is generated from the entered signals rather than a static screenshot. I reused the existing workspace only as a starting shell; the prior portfolio content was replaced with this focused submission prototype.
+Example questions:
 
-## Next investigation
+- Why did labor costs increase last month?
+- Which department caused the largest variance?
+- How can we reduce labor costs?
+- Compare this month with the previous month.
 
-I would run a replay study with responders using resolved incidents. The key decision is whether the evidence-linked brief reduces time-to-first-useful-action while keeping users able to explain and challenge the top hypothesis.
+## Deploying to Vercel
+
+1. Push this repository to GitHub.
+2. Import the repository into Vercel.
+3. Select **Next.js** as the framework.
+4. Use the default build command, `npm run build`.
+5. Click **Deploy** and open the generated URL.
+
+No production database is required. The demo data is bundled as TypeScript and the analysis route works without environment variables. If an OpenAI-compatible explanation layer is added later, keep `OPENAI_API_KEY` server-only in Vercel Project Settings; never expose it in client code. Copy `.env.example` as a reference.
+
+## Testing and checks
+
+```bash
+npm run build
+```
+
+The deterministic calculations cover budget variance, percentage variance, labor cost per occupied room, largest department variance, and missing-data-safe behavior in `lib/analytics.ts`. The primary demo flow is: login → dashboard → assistant → suggested question → evidence-backed response.
+
+## Screenshots
+
+Add screenshots of the login screen, dashboard, and assistant response here for an interview submission.
+
+## Current limitations
+
+- Synthetic data only
+- One hotel and one demo manager role
+- Demo authentication, not enterprise identity
+- No PMS, payroll, or accounting integrations
+- No real-time updates
+- AI integration is optional; local deterministic logic is the default
+- Not intended for production use
+
+## Future Production Roadmap
+
+- Real hotel PMS and payroll integrations
+- PostgreSQL and durable data pipelines
+- Enterprise authentication and multi-property access control
+- Scheduled data pipelines and forecasting
+- Automated anomaly detection and alert notifications
+- Audit logs, observability, and production deployment
