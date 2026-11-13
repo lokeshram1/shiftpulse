@@ -1,0 +1,1 @@
+import './globals.css';export const metadata={title:'Shiftwell · Workforce Operations',description:'Shift task management and operational analytics for retail and food service teams.'};export default function RootLayout({children}:{children:React.ReactNode}){return <html lang="en"><body>{children}</body></html>}
